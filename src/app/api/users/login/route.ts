@@ -2,6 +2,15 @@ import User from "@/models/user.model";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import connectDB from "@/config/db";
+
+connectDB();
+
+export interface UserPayload {
+    id: string;
+    email: string;
+    userName: string;
+}
 
 export async function POST(req: NextRequest) {
     try {
@@ -21,7 +30,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({error: "Invalid credentials"}, {status: 400});
         }
 
-        const tokenData = {
+        const tokenData: UserPayload = {
             id: user._id,
             email: user.email,
             userName: user.userName,
